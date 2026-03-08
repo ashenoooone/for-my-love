@@ -1,31 +1,31 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import DotsCanvas from '../components/dots-canvas.astro';
-import text from '../../text.md?raw';
+import Layout from '../layouts/Layout.astro'
+import DotsCanvas from '../components/dots-canvas.astro'
+import text from '../../text.md?raw'
 
 const normalizedText = text
   .split(/\n/)
   .map((line) => line.trim())
   .join(' ')
   .replace(/\s+/g, ' ')
-  .trim();
+  .trim()
 
-const SYMBOL_POOL = '!@#$%^&*()_+-=[]{}|;\':",.<>?/~`\\°•·…¿¡¥€£©®™';
-const pick = (str: string) => str[Math.floor(Math.random() * str.length)];
+const SYMBOL_POOL = '!@#$%^&*()_+-=[]{}|;\':",.<>?/~`\\°•·…¿¡¥€£©®™'
+const pick = (str: string) => str[Math.floor(Math.random() * str.length)]
 
-const placeholderSymbols = normalizedText.split('').map(() => pick(SYMBOL_POOL));
+const placeholderSymbols = normalizedText.split('').map(() => pick(SYMBOL_POOL))
 
-const words = normalizedText.split(/\s+/);
-type Segment = { type: 'word'; chars: string[]; startIndex: number } | { type: 'space'; startIndex: number };
-const segments: Segment[] = [];
-let idx = 0;
+const words = normalizedText.split(/\s+/)
+type Segment = { type: 'word'; chars: string[]; startIndex: number } | { type: 'space'; startIndex: number }
+const segments: Segment[] = []
+let idx = 0
 for (let w = 0; w < words.length; w++) {
-  const wordChars = words[w].split('');
-  segments.push({ type: 'word', chars: wordChars, startIndex: idx });
-  idx += wordChars.length;
+  const wordChars = words[w].split('')
+  segments.push({ type: 'word', chars: wordChars, startIndex: idx })
+  idx += wordChars.length
   if (w < words.length - 1) {
-    segments.push({ type: 'space', startIndex: idx });
-    idx += 1;
+    segments.push({ type: 'space', startIndex: idx })
+    idx += 1
   }
 }
 ---
@@ -44,17 +44,19 @@ for (let w = 0; w < words.length; w++) {
       <div class="terminal-body">
         <div class="terminal-prompt">$ cat congratulation.txt</div>
         <div id="decode-output" class="terminal-output terminal-output-chars">
-          {segments.map((seg) =>
-            seg.type === 'word' ? (
-              <span class="word">
-                {seg.chars.map((_, i) => (
-                  <span class="char">{placeholderSymbols[seg.startIndex + i]}</span>
-                ))}
-              </span>
-            ) : (
-              <span class="char">{placeholderSymbols[seg.startIndex]}</span>
+          {
+            segments.map((seg) =>
+              seg.type === 'word' ? (
+                <span class="word">
+                  {seg.chars.map((_, i) => (
+                    <span class="char">{placeholderSymbols[seg.startIndex + i]}</span>
+                  ))}
+                </span>
+              ) : (
+                <span class="char">{placeholderSymbols[seg.startIndex]}</span>
+              ),
             )
-          )}
+          }
         </div>
         <div class="terminal-prompt terminal-input-line">
           $ <input
@@ -75,118 +77,117 @@ for (let w = 0; w < words.length; w++) {
 </Layout>
 
 <script define:vars={{ normalizedText }}>
-  const SYMBOL_POOL = '!@#$%^&*()_+-=[]{}|;\':",.<>?/~`\\°•·…¿¡¥€£©®™';
-  const outputEl = document.getElementById('decode-output');
-  const inputEl = document.getElementById('decode-cmd');
-  const cursorEl = document.getElementById('input-cursor');
-  const errorEl = document.getElementById('decode-error');
+  const SYMBOL_POOL = '!@#$%^&*()_+-=[]{}|;\':",.<>?/~`\\°•·…¿¡¥€£©®™'
+  const outputEl = document.getElementById('decode-output')
+  const inputEl = document.getElementById('decode-cmd')
+  const cursorEl = document.getElementById('input-cursor')
+  const errorEl = document.getElementById('decode-error')
 
-  const TRIGGER_COMMANDS = ['decrypt', 'decode', 'love', 'open'];
-  const BLOCK_DURATION_MS = 40;
-  const CYCLES_BEFORE_REVEAL = 2;
-  const CYCLE_MS = 25;
-  const LIVE_CIPHER_STEP_MS = 95;
-  const LIVE_CIPHER_FLIP_DURATION_MS = 140;
-  const CHARS_PER_LINE = 28;
+  const TRIGGER_COMMANDS = ['decrypt', 'decode', 'love', 'open']
+  const BLOCK_DURATION_MS = 6
+  const CYCLES_BEFORE_REVEAL = 0
+  const CYCLE_MS = 12
+  const LIVE_CIPHER_FLIP_DURATION_MS = 140
+  const CHARS_PER_LINE = 28
 
   function pick() {
-    return SYMBOL_POOL[Math.floor(Math.random() * SYMBOL_POOL.length)];
+    return SYMBOL_POOL[Math.floor(Math.random() * SYMBOL_POOL.length)]
   }
 
-  const spans = outputEl.querySelectorAll('.char');
-  const len = spans.length;
+  const spans = outputEl.querySelectorAll('.char')
+  const len = spans.length
 
   function updateCipherBatch() {
-    const numLines = Math.ceil(len / CHARS_PER_LINE);
+    const numLines = Math.ceil(len / CHARS_PER_LINE)
     for (let line = 0; line < numLines; line++) {
-      const lineStart = line * CHARS_PER_LINE;
-      const lineEnd = Math.min(lineStart + CHARS_PER_LINE, len);
-      const lineLen = lineEnd - lineStart;
-      if (lineLen === 0) continue;
-      const idx = lineStart + Math.floor(Math.random() * lineLen);
-      const span = spans[idx];
+      const lineStart = line * CHARS_PER_LINE
+      const lineEnd = Math.min(lineStart + CHARS_PER_LINE, len)
+      const lineLen = lineEnd - lineStart
+      if (lineLen === 0) continue
+      const idx = lineStart + Math.floor(Math.random() * lineLen)
+      const span = spans[idx]
       if (!span.classList.contains('decoded')) {
-        span.classList.add('cipher-flip');
+        span.classList.add('cipher-flip')
         setTimeout(() => {
-          span.textContent = pick();
-          span.classList.remove('cipher-flip');
-        }, LIVE_CIPHER_FLIP_DURATION_MS);
+          if (!span.classList.contains('decoded')) {
+            span.textContent = pick()
+          }
+          span.classList.remove('cipher-flip')
+        }, LIVE_CIPHER_FLIP_DURATION_MS)
       }
     }
   }
 
-  updateCipherBatch();
-  const liveCipherTimer = setInterval(updateCipherBatch, LIVE_CIPHER_STEP_MS);
+  updateCipherBatch()
 
   function setInputWidth() {
-    const len = Math.max(1, inputEl.value.length);
-    inputEl.style.width = `${len}ch`;
+    const len = Math.max(1, inputEl.value.length)
+    inputEl.style.width = `${len}ch`
   }
-  setInputWidth();
-  inputEl.addEventListener('input', setInputWidth);
+  setInputWidth()
+  inputEl.addEventListener('input', setInputWidth)
 
   function runDecodeAnimation() {
-    clearInterval(liveCipherTimer);
-    const target = normalizedText;
-    const spanList = outputEl.querySelectorAll('.char');
-    const len = target.length;
+    const target = normalizedText
+    const spanList = outputEl.querySelectorAll('.char')
+    const len = target.length
 
     function step(i) {
       if (i >= len) {
-        cursorEl.style.visibility = 'hidden';
-        return;
+        cursorEl.style.visibility = 'hidden'
+        return
       }
-      const span = spanList[i];
-      span.classList.add('current');
-      let cycle = 0;
+      const span = spanList[i]
+      span.classList.add('current')
+      let cycle = 0
       function tick() {
         if (cycle < CYCLES_BEFORE_REVEAL) {
-          span.textContent = pick();
-          cycle++;
-          setTimeout(tick, CYCLE_MS);
+          span.textContent = pick()
+          cycle++
+          setTimeout(tick, CYCLE_MS)
         } else {
-          span.textContent = target[i];
-          span.classList.remove('current');
-          span.classList.add('decoded');
-          setTimeout(step, BLOCK_DURATION_MS, i + 1);
+          span.textContent = target[i]
+          span.classList.remove('current')
+          span.classList.add('decoded')
+          setTimeout(step, BLOCK_DURATION_MS, i + 1)
         }
       }
-      setTimeout(tick, CYCLE_MS);
+      setTimeout(tick, CYCLES_BEFORE_REVEAL > 0 ? CYCLE_MS : 0)
     }
-    step(0);
+    step(0)
   }
 
   function showError(msg) {
-    errorEl.textContent = msg;
-    errorEl.classList.add('visible');
+    errorEl.textContent = msg
+    errorEl.classList.add('visible')
   }
 
   function clearError() {
-    errorEl.textContent = '';
-    errorEl.classList.remove('visible');
+    errorEl.textContent = ''
+    errorEl.classList.remove('visible')
   }
 
   inputEl.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
-    e.preventDefault();
-    const cmd = inputEl.value.trim().toLowerCase();
-    clearError();
+    if (e.key !== 'Enter') return
+    e.preventDefault()
+    const cmd = inputEl.value.trim().toLowerCase()
+    clearError()
     if (TRIGGER_COMMANDS.includes(cmd)) {
-      inputEl.disabled = true;
-      inputEl.style.opacity = '0.5';
-      cursorEl.style.animation = 'none';
-      runDecodeAnimation();
+      inputEl.disabled = true
+      inputEl.style.opacity = '0.5'
+      cursorEl.style.animation = 'none'
+      runDecodeAnimation()
     } else if (cmd === '') {
-      showError('Введи команду :)');
+      showError('Введи команду :)')
     } else if (cmd === 'help' || cmd === '?') {
-      showError('Попробуй: decrypt, decode или love');
+      showError('Попробуй: decrypt, decode или love')
     } else {
-      showError(`command not found: ${cmd}`);
+      showError(`command not found: ${cmd}`)
     }
-  });
+  })
 
-  inputEl.addEventListener('input', () => clearError());
-  inputEl.focus({ preventScroll: true });
+  inputEl.addEventListener('input', () => clearError())
+  inputEl.focus({ preventScroll: true })
 </script>
 
 <style>
@@ -306,8 +307,9 @@ for (let w = 0; w < words.length; w++) {
   }
 
   .terminal-output-chars .char.current {
-    background: rgba(0, 255, 100, 0.35);
-    box-shadow: 0 0 0 1px rgba(0, 255, 100, 0.5);
+    background: #00ff64;
+    color: #001a00;
+    box-shadow: none;
     border-radius: 1px;
   }
 
