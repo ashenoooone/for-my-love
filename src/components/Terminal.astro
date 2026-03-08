@@ -21,6 +21,7 @@ const { title } = Astro.props
   .terminal {
     width: 100%;
     max-width: 28rem;
+    min-width: 0;
     background: rgba(0, 10, 0, 0.92);
     border: 1px solid rgba(0, 255, 100, 0.35);
     border-radius: 12px;
@@ -30,6 +31,7 @@ const { title } = Astro.props
       inset 0 1px 0 rgba(0, 255, 100, 0.06);
     font-family: var(--font-mono), ui-monospace, monospace;
     overflow: hidden;
+    box-sizing: border-box;
   }
 
   .terminal-header {
@@ -71,18 +73,26 @@ const { title } = Astro.props
     padding: 1rem 1.25rem 1.5rem;
     max-height: calc(100vh - 8rem);
     max-height: calc(100dvh - 8rem);
+    overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    box-sizing: border-box;
   }
 
   .terminal-body::-webkit-scrollbar {
     display: none;
   }
 
+  @media (max-width: 480px) {
+    .terminal-body {
+      padding: 1rem;
+    }
+  }
+
   @media (max-width: 380px) {
     .terminal-body {
-      padding: 0.875rem 1rem 1.25rem;
+      padding: 0.875rem;
     }
   }
 </style>

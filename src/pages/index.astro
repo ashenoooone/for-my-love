@@ -55,6 +55,7 @@ for (let w = 0; w < words.length; w++) {
   const inputEl = document.getElementById('decode-cmd')
   const cursorEl = document.getElementById('input-cursor')
   const errorEl = document.getElementById('decode-error')
+  const successEl = document.getElementById('decode-success')
 
   const TRIGGER_COMMANDS = ['🐿', 'белка']
   const BLOCK_DURATION_MS = 6
@@ -141,6 +142,13 @@ for (let w = 0; w < words.length; w++) {
     errorEl.classList.remove('visible')
   }
 
+  function showSuccess(msg) {
+    if (successEl) {
+      successEl.textContent = msg
+      successEl.classList.add('visible')
+    }
+  }
+
   const HINT_RIDDLE = 'Пароль - наш с тобой любимый стикер и гифка.'
   const HINT_NUDGE = 'Подсказка: введи одно эмодзи или слово'
 
@@ -155,7 +163,8 @@ for (let w = 0; w < words.length; w++) {
       inputEl.disabled = true
       inputEl.style.opacity = '0.5'
       cursorEl.style.animation = 'none'
-      runDecodeAnimation()
+      showSuccess('✓ Верно! Расшифровываю...')
+      setTimeout(runDecodeAnimation, 700)
     } else if (cmd === '') {
       showError('Введи команду :)')
     } else if (cmd === 'help' || cmd === '?' || cmd === 'hint' || cmd === 'подсказка') {
@@ -202,7 +211,11 @@ for (let w = 0; w < words.length; w++) {
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
     box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   .terminal-layout {
@@ -213,6 +226,7 @@ for (let w = 0; w < words.length; w++) {
     gap: 1.25rem;
     width: 100%;
     max-width: 50rem;
+    min-width: 0;
   }
 
   .terminal-layout .terminal-prompt {
@@ -226,6 +240,11 @@ for (let w = 0; w < words.length; w++) {
     .terminal-layout {
       flex-direction: column;
       align-items: stretch;
+    }
+
+    .terminal-wrap {
+      padding-left: max(0.75rem, env(safe-area-inset-left));
+      padding-right: max(0.75rem, env(safe-area-inset-right));
     }
   }
 </style>

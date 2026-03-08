@@ -21,6 +21,7 @@
   /><span class="cursor" id="input-cursor">|</span>
 </div>
 <div id="decode-error" class="terminal-error" aria-live="polite"></div>
+<div id="decode-success" class="terminal-success" aria-live="polite"></div>
 
 <style>
   .terminal-prompt {
@@ -86,6 +87,19 @@
   }
 
   .terminal-error.visible {
+    opacity: 1;
+  }
+
+  .terminal-success {
+    color: #00ff64;
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    min-height: 1.25em;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .terminal-success.visible {
     opacity: 1;
   }
 
