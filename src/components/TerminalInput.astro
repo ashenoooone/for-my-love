@@ -1,0 +1,102 @@
+---
+---
+
+<div
+  class="terminal-prompt terminal-input-line"
+  role="button"
+  tabindex="0"
+  id="input-line-wrap"
+  aria-label="Ввод команды"
+>
+  $ <input
+    type="text"
+    id="decode-cmd"
+    class="terminal-input"
+    autocomplete="off"
+    autocapitalize="off"
+    spellcheck="false"
+    placeholder=""
+    maxlength="30"
+  /><span class="cursor" id="input-cursor">|</span>
+</div>
+<div id="decode-error" class="terminal-error" aria-live="polite"></div>
+
+<style>
+  .terminal-prompt {
+    color: #00ff64;
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.95;
+  }
+
+  .cursor {
+    animation: blink 1s step-end infinite;
+    color: #00ff64;
+  }
+
+  .terminal-input-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 0;
+    min-height: 2.75rem;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+  }
+
+  .terminal-input-line:focus {
+    outline: none;
+  }
+
+  .terminal-input-line:focus-within {
+    cursor: text;
+  }
+
+  .terminal-input {
+    flex: 0 0 auto;
+    width: 1ch;
+    min-width: 1ch;
+    max-width: 30ch;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #00ff64;
+    font: inherit;
+    font-size: 0.8125rem;
+    padding: 0;
+    margin: 0;
+    caret-color: transparent;
+  }
+
+  .terminal-input::placeholder {
+    color: rgba(0, 255, 100, 0.3);
+  }
+
+  .terminal-error {
+    color: #ff6b6b;
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    min-height: 1.25em;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .terminal-error.visible {
+    opacity: 1;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .terminal-input {
+      font-size: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+interface SegmentWord {
+  type: 'word'
+  chars: string[]
+  startIndex: number
+}
+interface SegmentSpace {
+  type: 'space'
+  startIndex: number
+}
+type Segment = SegmentWord | SegmentSpace
+
+interface Props {
+  segments: Segment[]
+  placeholderSymbols: string[]
+}
+const { segments, placeholderSymbols } = Astro.props
+---
+
+<div id="decode-output" class="terminal-output terminal-output-chars">
+  {segments.map((seg) =>
+    seg.type === 'word' ? (
+      <span class="word">
+        {seg.chars.map((_, i) => (
+          <span class="char">{placeholderSymbols[seg.startIndex + i]}</span>
+        ))}
+      </span>
+    ) : (
+      <span class="char">{placeholderSymbols[seg.startIndex]}</span>
+    )
+  )}
+</div>
+
+<style>
+  .terminal-output {
+    color: rgba(0, 255, 120, 0.92);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    white-space: normal;
+    word-wrap: break-word;
+    margin: 0 0 1rem 0;
+    font-weight: 400;
+  }
+
+  .terminal-output-chars {
+    display: block;
+    word-break: break-word;
+  }
+
+  .terminal-output-chars :global(.word) {
+    white-space: nowrap;
+    display: inline;
+  }
+
+  .terminal-output-chars :global(.char) {
+    display: inline-block;
+    width: 1ch;
+    min-width: 1ch;
+    text-align: center;
+    vertical-align: top;
+    box-sizing: border-box;
+    transition: opacity 0.14s ease;
+  }
+
+  .terminal-output-chars :global(.char.cipher-flip) {
+    opacity: 0.25;
+  }
+
+  .terminal-output-chars :global(.char.current) {
+    background: #00ff64;
+    color: #001a00;
+    box-shadow: none;
+    border-radius: 1px;
+  }
+
+  @media (max-width: 380px) {
+    .terminal-output {
+      font-size: 0.75rem;
+    }
+  }
+</style>

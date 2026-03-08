@@ -1,0 +1,88 @@
+---
+interface Props {
+  title: string
+}
+const { title } = Astro.props
+---
+
+<div class="terminal">
+  <header class="terminal-header">
+    <span class="terminal-dot red" aria-hidden="true"></span>
+    <span class="terminal-dot yellow" aria-hidden="true"></span>
+    <span class="terminal-dot green" aria-hidden="true"></span>
+    <span class="terminal-title">{title}</span>
+  </header>
+  <div class="terminal-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .terminal {
+    width: 100%;
+    max-width: 28rem;
+    background: rgba(0, 10, 0, 0.92);
+    border: 1px solid rgba(0, 255, 100, 0.35);
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 1px rgba(0, 255, 100, 0.1),
+      0 25px 50px -12px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(0, 255, 100, 0.06);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(0, 255, 100, 0.2);
+  }
+
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .terminal-dot.red {
+    background: #ff5f56;
+  }
+
+  .terminal-dot.yellow {
+    background: #ffbd2e;
+  }
+
+  .terminal-dot.green {
+    background: #27c93f;
+  }
+
+  .terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(0, 255, 100, 0.6);
+    letter-spacing: 0.02em;
+  }
+
+  .terminal-body {
+    padding: 1rem 1.25rem 1.5rem;
+    max-height: calc(100vh - 8rem);
+    max-height: calc(100dvh - 8rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .terminal-body::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 380px) {
+    .terminal-body {
+      padding: 0.875rem 1rem 1.25rem;
+    }
+  }
+</style>
