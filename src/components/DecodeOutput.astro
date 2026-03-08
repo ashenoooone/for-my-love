@@ -18,17 +18,19 @@ const { segments, placeholderSymbols } = Astro.props
 ---
 
 <div id="decode-output" class="terminal-output terminal-output-chars">
-  {segments.map((seg) =>
-    seg.type === 'word' ? (
-      <span class="word">
-        {seg.chars.map((_, i) => (
-          <span class="char">{placeholderSymbols[seg.startIndex + i]}</span>
-        ))}
-      </span>
-    ) : (
-      <span class="char">{placeholderSymbols[seg.startIndex]}</span>
+  {
+    segments.map((seg) =>
+      seg.type === 'word' ? (
+        <span class="word">
+          {seg.chars.map((_, i) => (
+            <span class="char">{placeholderSymbols[seg.startIndex + i]}</span>
+          ))}
+        </span>
+      ) : (
+        <span class="char">{placeholderSymbols[seg.startIndex]}</span>
+      ),
     )
-  )}
+  }
 </div>
 
 <style>

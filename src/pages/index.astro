@@ -56,7 +56,7 @@ for (let w = 0; w < words.length; w++) {
   const cursorEl = document.getElementById('input-cursor')
   const errorEl = document.getElementById('decode-error')
 
-  const TRIGGER_COMMANDS = ['decrypt', 'decode', 'love', 'open', 'ключ', 'пароль', '🐹']
+  const TRIGGER_COMMANDS = ['🐿']
   const BLOCK_DURATION_MS = 6
   const CYCLES_BEFORE_REVEAL = 0
   const CYCLE_MS = 12
@@ -142,8 +142,8 @@ continue
     errorEl.classList.remove('visible')
   }
 
-  const HINT_RIDDLE = 'Файл зашифрован. Вспомни .'
-  const HINT_NUDGE = 'Подсказка: хомяк 🐹 — введи его эмодзи.'
+  const HINT_RIDDLE = 'Пароль - наш с тобой любимый стикер и гифка.'
+  const HINT_NUDGE = 'Подсказка: введи одно эмодзи'
 
   let wrongAttempts = 0
 
